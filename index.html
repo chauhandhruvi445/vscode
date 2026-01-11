@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Surprise 🤍</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  min-height:100vh;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#fde7eb,#f9d5e5,#fbc2eb);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  color:#5b2c3b;
+}
+
+/* ================= OPEN SCREEN ================= */
+.open-screen{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle,#f6c1cc,#e6a6b4);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+
+.open-btn{
+  font-size:clamp(1.8rem,4vw,2.6rem);
+  padding:20px 65px;
+  border:none;
+  border-radius:70px;
+  cursor:pointer;
+  color:#fff;
+  background:linear-gradient(45deg,#f3a6b4,#e89cab,#d98c9f);
+  box-shadow:0 0 35px rgba(217,140,159,.6);
+  animation:pulseGlow 1.8s infinite;
+}
+
+@keyframes pulseGlow{
+  0%{transform:scale(1);box-shadow:0 0 25px rgba(217,140,159,.5);}
+  50%{transform:scale(1.08);box-shadow:0 0 55px rgba(217,140,159,.85);}
+  100%{transform:scale(1);box-shadow:0 0 25px rgba(217,140,159,.5);}
+}
+
+/* ================= MAIN CARD ================= */
+.container{
+  display:none;
+  width:min(92%,820px);
+  background:rgba(255,255,255,.38);
+  backdrop-filter:blur(18px);
+  border-radius:28px;
+  padding:clamp(25px,5vw,50px);
+  text-align:center;
+  box-shadow:0 30px 60px rgba(255,182,193,.35);
+  animation:fadeUp 1.4s ease forwards;
+  z-index:2;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(40px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.title{
+  font-size:clamp(2rem,5vw,3.2rem);
+  font-family:Georgia,'Times New Roman',serif;
+  font-style:italic;
+  color:#7a2c3d;
+}
+
+.subtitle{
+  margin:12px 0 25px;
+  font-size:clamp(1rem,2.5vw,1.2rem);
+  opacity:.85;
+}
+
+#countdown{
+  font-size:clamp(1.6rem,4vw,2.4rem);
+  font-weight:600;
+  letter-spacing:2px;
+  color:#7a2c3d;
+  text-shadow:0 0 16px rgba(255,255,255,.9);
+  margin-bottom:30px;
+  animation:pulse 1.4s infinite;
+}
+
+@keyframes pulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.05);}
+  100%{transform:scale(1);}
+}
+
+/* ================= IMAGES ================= */
+.photos{
+  display:flex;
+  gap:18px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.photos img{
+  width:100%;
+  max-width:160px;
+  aspect-ratio:3/4;
+  object-fit:cover;
+  border-radius:18px;
+  box-shadow:0 15px 35px rgba(255,182,193,.5);
+  transition:.4s;
+}
+
+.photos img:hover{
+  transform:scale(1.07);
+}
+
+/* ================= CONFETTI ================= */
+#confetti{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+}
+
+.confetti{
+  position:absolute;
+  top:-10px;
+  font-size:clamp(14px,2.5vw,20px);
+  animation:fall linear forwards;
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(110vh) rotate(360deg);
+    opacity:0;
+  }
+}
+
+/* ================= MOBILE OPTIMIZATION ================= */
+@media (max-width:480px){
+  .photos img{
+    max-width:120px;
+  }
+  #countdown{
+    letter-spacing:1px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- OPEN SCREEN -->
+<div class="open-screen" id="openScreen">
+  <button class="open-btn" onclick="openSurprise()">🥰 OPEN 🥰</button>
+</div>
+
+<!-- CONFETTI -->
+<div id="confetti"></div>
+
+<!-- MAIN CONTENT -->
+<div class="container" id="mainContent">
+  <h1 class="title">Birthday Soon, Shelluu 🤍</h1>
+  <p class="subtitle">Counting moments until your special day</p>
+  <div id="countdown">Loading...</div>
+
+  <div class="photos">
+    <img src="shellupic2.jpeg" alt="">
+    <img src="shellupic.jpeg" alt="">
+    <img src="shellypic3.jpeg" alt="">
+  </div>
+</div>
+
+<script>
+function openSurprise(){
+  document.getElementById("openScreen").style.display="none";
+  document.getElementById("mainContent").style.display="block";
+}
+
+/* COUNTDOWN */
+const birthday=new Date("January 22, 2026 00:00:00").getTime();
+setInterval(()=>{
+  const now=new Date().getTime();
+  const diff=birthday-now;
+  const d=Math.floor(diff/(1000*60*60*24));
+  const h=Math.floor((diff/(1000*60*60))%24);
+  const m=Math.floor((diff/(1000*60))%60);
+  const s=Math.floor((diff/1000)%60);
+  document.getElementById("countdown").innerHTML=
+  `${d}d ${h}h ${m}m ${s}s`;
+},1000);
+
+/* HEART CONFETTI */
+const confetti=document.getElementById("confetti");
+const hearts=["💗","💖","🤍","💕","💞"];
+setInterval(()=>{
+  const el=document.createElement("span");
+  el.className="confetti";
+  el.innerText=hearts[Math.floor(Math.random()*hearts.length)];
+  el.style.left=Math.random()*100+"vw";
+  el.style.animationDuration=(Math.random()*3+3)+"s";
+  confetti.appendChild(el);
+  setTimeout(()=>el.remove(),6000);
+},200);
+</script>
+
+</body>
+</html>
